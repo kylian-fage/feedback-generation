@@ -1,0 +1,16 @@
+{
+    "answers": [
+        {
+            "question": "Question One?",
+            "answers": ["Answer One", "Answer Two"]
+        },
+        {
+            "question": "Question Two?",
+            "answers": ["Answer Three"]
+        },
+        {
+            "question": "Question Three?",
+            "answers": ["Answer Two", "Answer Four"]
+        }
+    ]
+}
