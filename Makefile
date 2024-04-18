@@ -1,7 +1,5 @@
 .PHONY: run-dev run-server run-client setup check-npm check-poetry install-api
 
-VENV = .venv/bin
-
 run-dev:
 	$(MAKE) -j2 run-server run-client
 
@@ -12,10 +10,10 @@ run-client:
 	npm run client
 
 check-npm:
-	npm -v || (echo "npm is not installed, please visit 'https://nodejs.org/en/download/'" && exit 1)
+	@command -v npm >/dev/null 2>&1 || { echo "npm is not installed, please visit 'https://nodejs.org/en/download/'"; exit 1; }
 
 check-poetry:
-	poetry -V || (echo "poetry is not installed, please visit 'https://python-poetry.org/docs/#installation'" && exit 1)
+	@command -V poetry >/dev/null 2>&1 || { echo "poetry is not installed, please visit 'https://python-poetry.org/docs/#installation'"; exit 1; }
 
 install-api: check-poetry
 	cd api/ && poetry install
