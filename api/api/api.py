@@ -2,7 +2,8 @@ import os
 import time
 
 from flask import Flask, Response, json, jsonify, request
-from utils import Answer, Feedback, QuizData, StatusCode, compare_answers
+
+from .utils import Answer, Feedback, QuizData, StatusCode, compare_answers
 
 API_ROOT = os.path.realpath(os.path.dirname(__file__))
 data_url = os.path.join(API_ROOT, os.path.pardir, "data")
@@ -59,5 +60,5 @@ def handle_request() -> tuple[Response, StatusCode]:
     return jsonify(feedback), 200
 
 
-if __name__ == "__main__":
+def main() -> None:
     app.run(debug=True, port=3001, host="localhost")

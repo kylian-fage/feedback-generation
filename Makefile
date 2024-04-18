@@ -1,4 +1,4 @@
-.PHONY: run-dev run-server run-client setup check-npm install-python-requirements setup-venv upgrade-pip
+.PHONY: run-dev run-server run-client setup check-npm check-poetry install-api
 
 VENV = .venv/bin
 
@@ -6,7 +6,7 @@ run-dev:
 	$(MAKE) -j2 run-server run-client
 
 run-server:
-	$(VENV)/python api/api/api.py
+	cd api/ && poetry run server
 
 run-client:
 	npm run client
@@ -14,14 +14,11 @@ run-client:
 check-npm:
 	npm -v || (echo "npm is not installed, please visit 'https://nodejs.org/en/download/'" && exit 1)
 
-setup-venv:
-	python -m venv .venv
+check-poetry:
+	poetry -V || (echo "poetry is not installed, please visit 'https://python-poetry.org/docs/#installation'" && exit 1)
 
-upgrade-pip:
-	$(VENV)/python -m pip install --upgrade pip
+install-api: check-poetry
+	cd api/ && poetry install
 
-install-python-requirements: setup-venv upgrade-pip
-	$(VENV)/pip install -r api/requirements.txt
-
-setup: check-npm
-	npm install && $(MAKE) install-python-requirements
+setup: check-npm check-poetry
+	npm install && $(MAKE) install-api

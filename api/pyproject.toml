@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "api"
+version = "0.1.0"
+description = ""
+authors = ["Kylian Fage <kylianfage@gmail.com>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+Flask = "^3.0.3"
+langchain = "^0.1.16"
+openai = "^1.21.2"
+python-dotenv = "^1.0.1"
+langchain-openai = "^0.1.3"
+
+[tool.poetry.scripts]
+server = "api.api:main"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

@@ -5,7 +5,7 @@
     "type": "module",
     "license": "MIT",
     "scripts": {
-        "server": ".venv/bin/python api/api/api.py",
+        "server": "cd api/ && poetry run server",
         "client": "vite",
         "dev": "concurrently --kill-others 'npm run client' 'npm run server'",
         "build": "tsc && vite build",
