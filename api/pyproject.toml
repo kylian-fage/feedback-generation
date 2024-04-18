@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "api"
 version = "0.1.0"
-description = ""
+description = "API for feedback generation"
 authors = ["Kylian Fage <kylianfage@gmail.com>"]
 license = "MIT"
 
