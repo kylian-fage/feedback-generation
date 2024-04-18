@@ -13,7 +13,7 @@ check-npm:
 	@command -v npm >/dev/null 2>&1 || { echo "npm is not installed, please visit 'https://nodejs.org/en/download/'"; exit 1; }
 
 check-poetry:
-	@command -V poetry >/dev/null 2>&1 || { echo "poetry is not installed, please visit 'https://python-poetry.org/docs/#installation'"; exit 1; }
+	@command -v poetry >/dev/null 2>&1 || { echo "poetry is not installed, please visit 'https://python-poetry.org/docs/#installation'"; exit 1; }
 
 install-api: check-poetry
 	cd api/ && poetry install
