@@ -1,30 +1,88 @@
 {
     "quiz": [
         {
-            "question": "Question One?",
+            "question": "What is the primary function of syntax in language?",
             "options": [
-                "Answer One",
-                "Answer Two",
-                "Answer Three",
-                "Answer Four"
+                "To study the meaning of words and phrases",
+                "To govern the arrangement of words in sentences",
+                "To describe the sounds of a language",
+                "To analyze the historical development of a language"
             ]
         },
         {
-            "question": "Question Two?",
+            "question": "In the sentence *She sings beautifully,* which word is the head of the dependency structure?",
             "options": [
-                "Answer One",
-                "Answer Two",
-                "Answer Three",
-                "Answer Four"
+                "*She*",
+                "*sings*",
+                "*beautifully*",
+                "None of the above"
             ]
         },
         {
-            "question": "Question Three?",
+            "question": "Which of the following are basic units of syntactic analysis?",
+            "options": ["Morphemes", "Phrases", "Clauses", "Sentences"]
+        },
+        {
+            "question": "In the sentence *The book on the table is mine,* what is the syntactic role of *on the table*?",
             "options": [
-                "Answer One",
-                "Answer Two",
-                "Answer Three",
-                "Answer Four"
+                "Subject",
+                "Object",
+                "Prepositional phrase",
+                "Verb phrase"
+            ]
+        },
+        {
+            "question": "What is the purpose of phrase structure rules in syntax?",
+            "options": [
+                "To generate the permissible structures of a language",
+                "To describe the meaning of sentences",
+                "To account for the pronunciation of sentences",
+                "To study the historical development of sentence structures"
+            ]
+        },
+        {
+            "question": "In the sentence *The book that I read was interesting,* what is the syntactic function of *that I read*?",
+            "options": [
+                "Subject",
+                "Object",
+                "Relative clause modifier",
+                "Complement"
+            ]
+        },
+        {
+            "question": "What is the role of hierarchical structure in syntax?",
+            "options": [
+                "To represent the linear order of words in a sentence",
+                "To capture the relationships between words and phrases",
+                "To describe the meaning of a sentence",
+                "To study the sounds of a sentence"
+            ]
+        },
+        {
+            "question": "In the sentence *Flying planes can be dangerous,* what is the source of the structural ambiguity?",
+            "options": [
+                "The meaning of *flying*",
+                "The meaning of *planes*",
+                "The attachment of *flying*",
+                "The attachment of *dangerous*"
+            ]
+        },
+        {
+            "question": "What is the primary difference between arguments and adjuncts in dependency syntax?",
+            "options": [
+                "Arguments are obligatory, while adjuncts are optional",
+                "Arguments modify the meaning of the verb, while adjuncts modify the entire clause",
+                "Arguments are nouns, while adjuncts are adverbs or prepositional phrases",
+                "Arguments are always direct dependents of the verb, while adjuncts can be dependents of other elements"
+            ]
+        },
+        {
+            "question": "In the sentence *The old man walked slowly,* which of the following statements are true?",
+            "options": [
+                "*man* is the head",
+                "*walked* is the head",
+                "*old* is an adjectival modifier of *man*",
+                "*slowly* is an adverbial modifier of *man*"
             ]
         }
     ]

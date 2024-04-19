@@ -1,16 +1,49 @@
 {
     "answers": [
         {
-            "question": "Question One?",
-            "answers": ["Answer One", "Answer Two"]
+            "question": "What is the primary function of syntax in language?",
+            "answers": ["To govern the arrangement of words in sentences"]
         },
         {
-            "question": "Question Two?",
-            "answers": ["Answer Three"]
+            "question": "In the sentence *She sings beautifully,* which word is the head of the dependency structure?",
+            "answers": ["*sings*"]
         },
         {
-            "question": "Question Three?",
-            "answers": ["Answer Two", "Answer Four"]
+            "question": "Which of the following are basic units of syntactic analysis?",
+            "answers": ["Phrases", "Clauses", "Sentences"]
+        },
+        {
+            "question": "In the sentence *The book on the table is mine,* what is the syntactic role of *on the table*?",
+            "answers": ["Prepositional phrase"]
+        },
+        {
+            "question": "What is the purpose of phrase structure rules in syntax?",
+            "answers": ["To generate the permissible structures of a language"]
+        },
+        {
+            "question": "In the sentence *The book that I read was interesting,* what is the syntactic function of *that I read*?",
+            "answers": ["Relative clause modifier"]
+        },
+        {
+            "question": "What is the role of hierarchical structure in syntax?",
+            "answers": [
+                "To capture the relationships between words and phrases"
+            ]
+        },
+        {
+            "question": "In the sentence *Flying planes can be dangerous,* what is the source of the structural ambiguity?",
+            "answers": ["The attachment of *flying*"]
+        },
+        {
+            "question": "What is the primary difference between arguments and adjuncts in dependency syntax?",
+            "answers": ["Arguments are obligatory, while adjuncts are optional"]
+        },
+        {
+            "question": "In the sentence *The old man walked slowly,* which of the following statements are true?",
+            "answers": [
+                "*walked* is the head",
+                "*old* is an adjectival modifier of *man*"
+            ]
         }
     ]
 }
