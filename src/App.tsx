@@ -14,6 +14,7 @@ import {
     CircleX,
     RotateCcw,
 } from "lucide-react";
+import Markdown from "react-markdown";
 
 import { useEffect, useState } from "react";
 
@@ -82,7 +83,6 @@ function Quiz() {
                 })
                 .then((data) => {
                     setQuizData(data);
-                    console.log(data);
                 })
                 .catch((error) => {
                     console.error(
@@ -244,7 +244,12 @@ function Quiz() {
                         </div>
                         <div className="mt-6">
                             <div className="leading-loose font-bold text-teal-500">
-                                {quizData.quiz[currentQuestionIndex].question}
+                                <Markdown>
+                                    {
+                                        quizData.quiz[currentQuestionIndex]
+                                            .question
+                                    }
+                                </Markdown>
                             </div>
                         </div>
                         <div className="mt-6">
@@ -264,7 +269,7 @@ function Quiz() {
                                                 handleOptionClick(option)
                                             }
                                         >
-                                            {option}
+                                            <Markdown>{option}</Markdown>
                                         </Button>
                                     </div>
                                 ))}
