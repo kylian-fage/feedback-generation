@@ -28,6 +28,7 @@ interface QuestionData {
 interface Answers {
     question: string;
     answers: Answer[];
+    start: boolean;
 }
 interface QuizData {
     quiz: QuestionData[];
@@ -61,6 +62,7 @@ function Quiz() {
     const [answers, setAnswers] = useState<Answers>({
         question: "",
         answers: [],
+        start: false,
     });
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [isVisible, setIsVisible] = useState(true);
@@ -71,6 +73,7 @@ function Quiz() {
     });
     const [isLoading, setIsLoading] = useState(false);
     const [feedback, setFeedback] = useState("");
+    const [start, setStart] = useState(false);
 
     useEffect(() => {
         setTimeout(() => {
@@ -83,6 +86,7 @@ function Quiz() {
                 })
                 .then((data) => {
                     setQuizData(data);
+                    setStart(true);
                 })
                 .catch((error) => {
                     console.error(
@@ -102,8 +106,10 @@ function Quiz() {
         setAnswers({
             question: quizData.quiz[currentQuestionIndex].question,
             answers: selectedAnswers,
+            start: start,
         });
         setIsLoading(true);
+        setStart(false);
     };
 
     /**
@@ -123,6 +129,7 @@ function Quiz() {
                 setAnswers({
                     question: "",
                     answers: [],
+                    start: false,
                 });
             } else if (
                 !isCorrect &&
@@ -132,6 +139,7 @@ function Quiz() {
                 setAnswers({
                     question: "",
                     answers: [],
+                    start: false,
                 });
             } else {
                 setQuizCompleted(true);
@@ -207,11 +215,11 @@ function Quiz() {
     return (
         <Card
             key="1"
-            className={`w-full max-w-xl h-[32rem] mx-auto transition-opacity duration-500 flex flex-col justify-between ${
+            className={`w-full max-w-xl h-[32rem] mx-auto transition-opacity duration-500 grid grid-cols-1 content-between ${
                 isVisible ? "opacity-100" : "opacity-0"
             }`}
         >
-            <CardContent className="p-6">
+            <CardContent className="p-6 pb-2">
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                         {isCorrect && feedback ? (
@@ -278,7 +286,7 @@ function Quiz() {
                     </div>
                 )}
             </CardContent>
-            <CardFooter className="flex justify-end gap-2 p-6">
+            <CardFooter className="flex justify-end gap-2 pr-6 pb-6 pt-2">
                 <Button
                     variant="outline"
                     size="icon"
