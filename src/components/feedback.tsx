@@ -1,4 +1,5 @@
 import Markdown from "react-markdown";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export function Feedback({ content }: { content: string }) {
     return (
@@ -6,9 +7,9 @@ export function Feedback({ content }: { content: string }) {
             <div className="leading-loose font-bold text-teal-500">
                 Feedback
             </div>
-            <div>
+            <ScrollArea className="h-[19rem]">
                 <Markdown>{content}</Markdown>
-            </div>
+            </ScrollArea>
         </div>
     );
 }
