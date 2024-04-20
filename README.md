@@ -53,7 +53,7 @@
     make setup
     ```
 
-3. Complete the `.env.example` file
+3. Complete the `.env.example` file and change its name to `.env`
 
 4. Run the server
    - With `npm`
