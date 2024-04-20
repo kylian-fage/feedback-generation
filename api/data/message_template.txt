@@ -1,0 +1,6 @@
+The quiz question the student just answered is: {question}
+The student answer was: {correctness}
+The correct answer (don't include this in the feedback): {correct_answers}
+What the student actually answered: {answers}
+
+Write your feedback between <feedback> tags:
