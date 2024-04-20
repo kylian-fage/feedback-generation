@@ -272,7 +272,7 @@ function Quiz() {
                                                     ? "default"
                                                     : "outline"
                                             }`}
-                                            className={`w-full`}
+                                            className="w-full text-wrap h-fit"
                                             onClick={() =>
                                                 handleOptionClick(option)
                                             }
