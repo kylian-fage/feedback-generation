@@ -223,10 +223,10 @@ function Quiz() {
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                         {isCorrect && feedback ? (
-                            <CircleCheck className="h-6 w-6 text-teal-500" />
+                            <CircleCheck className="h-6 w-6 text-lime-500 animate-pulsing" />
                         ) : null}
                         {!isCorrect && feedback ? (
-                            <CircleX className="h-6 w-6 text-teal-500" />
+                            <CircleX className="h-6 w-6 text-red-500 animate-wobble" />
                         ) : null}
                         {!feedback ? (
                             <CircleHelp className="h-6 w-6 text-teal-500" />
