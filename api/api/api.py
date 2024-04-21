@@ -92,9 +92,9 @@ def handle_request() -> tuple[Response, StatusCode]:
             is_correct=is_correct,
         )
     except ValidationError as e:
-        return jsonify({"error": str(e)}), 500
+        return jsonify({"error": str(e), "isCorrect": is_correct}), 500
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        return jsonify({"error": str(e), "isCorrect": is_correct}), 500
 
     return jsonify(feedback.model_dump()), 200
 
