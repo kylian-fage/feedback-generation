@@ -15,7 +15,8 @@ from langchain_core.prompts import (
     SystemMessagePromptTemplate,
 )
 from langchain_core.runnables.history import RunnableWithMessageHistory
-from langchain_openai import OpenAI
+from langchain_mistralai import ChatMistralAI
+from langchain_openai import ChatOpenAI
 
 from api.utils import MessageDetails, SystemDetails
 
@@ -25,11 +26,21 @@ API_ROOT = os.path.realpath(os.path.dirname(__file__))
 data_url = os.path.join(API_ROOT, os.path.pardir, "data")
 store: dict[str, ChatMessageHistory] = {}
 PREFERRED_MODEL = os.environ.get("PREFERRED_MODEL", "gpt")
+llm: ChatOpenAI | ChatMistralAI
 
 match PREFERRED_MODEL:
     case "gpt":
-        llm = OpenAI(temperature=0.5)
-    # TODO: Add support for other models (Mistral, OLMO, maybe Claude?)
+        llm = ChatOpenAI(
+            api_key=os.environ["OPENAI_API_KEY"],
+            model="gpt-4-turbo",
+            temperature=0.5,
+        )
+    case "mixtral":
+        llm = ChatMistralAI(
+            api_key=os.environ["MISTRAL_API_KEY"],
+            model="open-mixtral-8x22b",
+            temperature=0.5,
+        )
     case _:
         raise ValueError(f"Unsupported model: {PREFERRED_MODEL}")
 
