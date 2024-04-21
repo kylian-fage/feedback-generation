@@ -17,6 +17,7 @@ import {
 import Markdown from "react-markdown";
 
 import { useEffect, useState } from "react";
+import { ErrorMessage } from "./components/error-message";
 
 type Option = string;
 type Question = string;
@@ -74,25 +75,36 @@ function Quiz() {
     const [isLoading, setIsLoading] = useState(false);
     const [feedback, setFeedback] = useState("");
     const [start, setStart] = useState(false);
+    const [dataFetchingFailed, setDataFetchingFailed] = useState(false);
+    const [feedbackGenerationFailed, setFeedbackGenerationFailed] =
+        useState(false);
 
     useEffect(() => {
         setTimeout(() => {
             fetch("/api/data")
                 .then((response) => {
-                    if (!response.ok) {
+                    if (response.status !== 200 && response.status !== 500) {
                         throw new Error("Network response was not ok");
                     }
                     return response.json();
                 })
                 .then((data) => {
-                    setQuizData(data);
-                    setStart(true);
+                    if (data.error) {
+                        console.error("API Error:", data.error);
+                        setDataFetchingFailed(true);
+                    } else if (data["quiz"] === undefined) {
+                        throw new Error("Network response was not ok");
+                    } else {
+                        setQuizData(data);
+                        setStart(true);
+                    }
                 })
                 .catch((error) => {
                     console.error(
                         "An error occurred while fetching the quiz data",
                         error
                     );
+                    setDataFetchingFailed(true);
                 });
         }, 1000);
     }, []);
@@ -163,14 +175,30 @@ function Quiz() {
                 body: JSON.stringify(answers),
             })
                 .then((response) => {
-                    if (!response.ok) {
+                    if (response.status !== 200 && response.status !== 500) {
                         throw new Error("Network response was not ok");
                     }
                     return response.json();
                 })
                 .then((data) => {
-                    setFeedback(data["feedback"]);
-                    setIsCorrect(data["isCorrect"]);
+                    if (data.error) {
+                        console.error("API Error:", data.error);
+                        setIsCorrect(
+                            data["isCorrect"] === undefined
+                                ? true
+                                : data["isCorrect"]
+                        );
+                        setFeedback(
+                            "We're sorry, but an unexpected error occurred while generating feedback."
+                        );
+                        setFeedbackGenerationFailed(true);
+                    } else if (data["feedback"] === undefined) {
+                        throw new Error("Network response was not ok");
+                    } else {
+                        setFeedback(data["feedback"]);
+                        setIsCorrect(data["isCorrect"]);
+                        setFeedbackGenerationFailed(false);
+                    }
                 })
                 .catch((error) => {
                     console.error(
@@ -178,9 +206,8 @@ function Quiz() {
                         error
                     );
                     setFeedback(
-                        "An error occurred while sending the answers to the server. Please try again later."
+                        "We're sorry, but an unexpected error occurred while generating feedback."
                     );
-                    setIsCorrect(true);
                 });
         }
     };
@@ -195,6 +222,15 @@ function Quiz() {
 
     if (quizCompleted) {
         return <QuizCompleted isVisible={isVisible} />;
+    }
+
+    if (dataFetchingFailed) {
+        return (
+            <ErrorMessage
+                className="max-w-xl mx-auto p-4"
+                error="An error occurred while fetching the quiz data. Please try again later."
+            />
+        );
     }
 
     /**
@@ -241,7 +277,10 @@ function Quiz() {
                 </div>
                 <hr className="mt-4" />
                 {feedback ? (
-                    <Feedback content={feedback} />
+                    <Feedback
+                        content={feedback}
+                        failed={feedbackGenerationFailed}
+                    />
                 ) : (
                     <div>
                         <div className="mt-4">
