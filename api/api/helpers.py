@@ -17,6 +17,7 @@ from langchain_core.prompts import (
 from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain_mistralai import ChatMistralAI
 from langchain_openai import ChatOpenAI
+from pydantic import ValidationError
 
 from api.utils import MessageDetails, SystemDetails
 
@@ -30,17 +31,27 @@ llm: ChatOpenAI | ChatMistralAI
 
 match PREFERRED_MODEL:
     case "gpt":
-        llm = ChatOpenAI(
-            api_key=os.environ["OPENAI_API_KEY"],
-            model="gpt-4-turbo",
-            temperature=0.5,
-        )
+        try:
+            llm = ChatOpenAI(
+                api_key=os.environ["OPENAI_API_KEY"],
+                model="gpt-4-turbo",
+                temperature=0.5,
+            )
+        except KeyError as e:
+            raise ValueError(
+                "OPENAI_API_KEY environment variable not set"
+            ) from e
     case "mixtral":
-        llm = ChatMistralAI(
-            api_key=os.environ["MISTRAL_API_KEY"],
-            model="open-mixtral-8x22b",
-            temperature=0.5,
-        )
+        try:
+            llm = ChatMistralAI(
+                api_key=os.environ["MISTRAL_API_KEY"],
+                model="open-mixtral-8x22b",
+                temperature=0.5,
+            )
+        except KeyError as e:
+            raise ValueError(
+                "MISTRAL_API_KEY environment variable not set"
+            ) from e
     case _:
         raise ValueError(f"Unsupported model: {PREFERRED_MODEL}")
 
@@ -139,9 +150,12 @@ def generate_feedback(
         answers="; ".join(message_details.answers),
     )
 
-    feedback = runnable.invoke(
-        {"input": message},
-        config={"configurable": {"session_id": session_id}},
-    )
+    try:
+        feedback = runnable.invoke(
+            {"input": message},
+            config={"configurable": {"session_id": session_id}},
+        )
+    except ValidationError as exc:
+        raise ValueError("Runnable did not return feedback") from exc
 
     return str(feedback)

@@ -20,6 +20,7 @@ server = "api.api:main"
 
 [tool.poetry.group.dev.dependencies]
 pydantic = "^2.7.0"
+loguru = "^0.7.2"
 
 [build-system]
 requires = ["poetry-core"]

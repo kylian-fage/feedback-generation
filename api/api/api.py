@@ -1,13 +1,15 @@
 import os
+from datetime import datetime
 from uuid import uuid4
 
 from flask import Flask, Response, json, jsonify, request
 from langchain_community.chat_message_histories.in_memory import (
     ChatMessageHistory,
 )
+from loguru import logger
 from pydantic import ValidationError
 
-from .helpers import data_url, generate_feedback, get_runnable
+from .helpers import API_ROOT, data_url, generate_feedback, get_runnable
 from .utils import (
     AnswerRequest,
     Correctness,
@@ -22,11 +24,22 @@ from .utils import (
 
 quiz_data = os.path.join(data_url, "quiz.json")
 answers_data = os.path.join(data_url, "answers.json")
+
 with open(os.path.join(data_url, "details.json"), encoding="utf-8") as f:
     details = SystemDetails(**json.load(f)["details"])
+
 history_store: dict[str, ChatMessageHistory] = {}
 runnable = get_runnable(history_store, details)
 session_id = ""
+
+log_url = os.path.join(API_ROOT, os.path.pardir, "log")
+logger.add(
+    os.path.join(
+        log_url,
+        f"api_dev_{datetime.now().strftime('%Y%m%dT%H%M%S')}_error.log",
+    )
+)
+
 app = Flask(__name__)
 
 
@@ -44,7 +57,8 @@ def get() -> tuple[Response, StatusCode]:
     with open(quiz_data, encoding="utf-8") as file:
         try:
             data: QuizData = QuizData(**json.load(file))
-        except ValidationError:
+        except ValidationError as exc:
+            logger.error(exc)
             return jsonify({"error": "Invalid data"}), 500
 
     return jsonify(data.model_dump()), 200
@@ -62,6 +76,7 @@ def handle_request() -> tuple[Response, StatusCode]:
 
     data = AnswerRequest(**request.get_json())
     if not data.answers:
+        logger.error("Received an empty answer list.")
         return jsonify({"error": "Invalid input"}), 400
 
     with open(answers_data, encoding="utf-8") as file:
@@ -70,6 +85,7 @@ def handle_request() -> tuple[Response, StatusCode]:
     try:
         is_correct, correct_answers = compare_answers(answers, data)
     except KeyError:
+        logger.error("Received an invalid answer list.")
         return jsonify({"error": "Invalid input"}), 400
 
     global session_id
@@ -92,8 +108,10 @@ def handle_request() -> tuple[Response, StatusCode]:
             is_correct=is_correct,
         )
     except ValidationError as e:
+        logger.error(e)
         return jsonify({"error": str(e), "isCorrect": is_correct}), 500
     except Exception as e:
+        logger.error(e)
         return jsonify({"error": str(e), "isCorrect": is_correct}), 500
 
     return jsonify(feedback.model_dump()), 200
