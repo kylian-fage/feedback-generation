@@ -49,7 +49,7 @@ class FeedbackOutputParser(BaseOutputParser[str]):
     """Feedback output parser."""
 
     def parse(self, text: str) -> str:
-        pattern = r"<feedback>(.*?)</feedback>"
+        pattern = r"<feedback>([\s\S]*?)</feedback>"
         feedback = re.search(pattern, text)
         if not feedback:
             raise OutputParserException(
