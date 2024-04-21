@@ -311,7 +311,7 @@ function Quiz() {
                                                     ? "default"
                                                     : "outline"
                                             }`}
-                                            className="w-full text-wrap h-fit"
+                                            className="w-full text-wrap h-fit border"
                                             onClick={() =>
                                                 handleOptionClick(option)
                                             }
