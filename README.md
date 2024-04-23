@@ -70,10 +70,19 @@
 
 ## Demo
 
+*Yet to come*
+
 ## License
 
-## Contact
+Distributed under the MIT License. See LICENSE for more information.
 
+## To do
+
+- [ ] Add OLMo
+- [ ] Refine quiz questions
+- [ ] Define a maximum number of attempts
+- [ ] Show the score
+- [ ] Generate a final feedback
 
 [shadcn]: https://img.shields.io/badge/shadcn-%23000?logo=shadcn%2Fui&logoColor=black&labelColor=white
 [shadcn-url]: https://ui.shadcn.com/
