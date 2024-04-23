@@ -107,9 +107,6 @@ def handle_request() -> tuple[Response, StatusCode]:
             feedback=generate_feedback(runnable, session_id, message_details),
             is_correct=is_correct,
         )
-    except ValidationError as e:
-        logger.error(e)
-        return jsonify({"error": str(e), "isCorrect": is_correct}), 500
     except Exception as e:
         logger.error(e)
         return jsonify({"error": str(e), "isCorrect": is_correct}), 500
