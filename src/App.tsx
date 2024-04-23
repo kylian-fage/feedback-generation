@@ -208,6 +208,8 @@ function Quiz() {
                     setFeedback(
                         "We're sorry, but an unexpected error occurred while generating feedback."
                     );
+                    setIsCorrect(true);
+                    setFeedbackGenerationFailed(true);
                 });
         }
     };
