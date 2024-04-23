@@ -15,10 +15,10 @@ from langchain_core.prompts import (
     SystemMessagePromptTemplate,
 )
 from langchain_core.runnables.history import RunnableWithMessageHistory
-from langchain_mistralai import ChatMistralAI
 from langchain_openai import ChatOpenAI
 from pydantic import ValidationError
 
+from api.mistral_patch import PatchedChatMistralAI
 from api.utils import MessageDetails, SystemDetails
 
 load_dotenv()
@@ -27,13 +27,12 @@ API_ROOT = os.path.realpath(os.path.dirname(__file__))
 data_url = os.path.join(API_ROOT, os.path.pardir, "data")
 store: dict[str, ChatMessageHistory] = {}
 PREFERRED_MODEL = os.environ.get("PREFERRED_MODEL", "gpt")
-llm: ChatOpenAI | ChatMistralAI
+llm: ChatOpenAI | PatchedChatMistralAI
 
 match PREFERRED_MODEL:
     case "gpt":
         try:
             llm = ChatOpenAI(
-                api_key=os.environ["OPENAI_API_KEY"],
                 model="gpt-4-turbo",
                 temperature=0.5,
             )
@@ -43,8 +42,7 @@ match PREFERRED_MODEL:
             ) from e
     case "mixtral":
         try:
-            llm = ChatMistralAI(
-                api_key=os.environ["MISTRAL_API_KEY"],
+            llm = PatchedChatMistralAI(
                 model="open-mixtral-8x22b",
                 temperature=0.5,
             )
