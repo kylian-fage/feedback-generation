@@ -18,7 +18,7 @@
     </li>
     <li><a href="#demo">Demo</a></li>
     <li><a href="#license">License</a></li>
-    <li><a href="#contact">Contact</a></li>
+    <li><a href="#to-do">To do</a></li>
   </ol>
 </details>
 
