@@ -3,4 +3,8 @@ The student answer was: {correctness}
 The correct answer (don't include this in the feedback): {correct_answers}
 What the student actually answered: {answers}
 
+Remember not to include the answer in your feedback.
+
+Make your feedback as efficient as you can. Let's think step by step.
+
 Write your feedback between <feedback> tags:
