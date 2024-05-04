@@ -9,11 +9,18 @@ from langchain_community.chat_message_histories.in_memory import (
 from loguru import logger
 from pydantic import ValidationError
 
-from .helpers import API_ROOT, data_url, generate_feedback, get_runnable
+from .helpers import (
+    API_ROOT,
+    data_url,
+    generate_feedback,
+    generate_final_feedback,
+    get_runnable,
+)
 from .utils import (
     AnswerRequest,
     Correctness,
     Feedback,
+    FinalFeedback,
     MessageDetails,
     QuizAnswers,
     QuizData,
@@ -112,6 +119,28 @@ def handle_request() -> tuple[Response, StatusCode]:
         return jsonify({"error": str(e), "isCorrect": is_correct}), 500
 
     return jsonify(feedback.model_dump()), 200
+
+
+@app.route("/api/final", methods=["GET"])
+def final_feedback() -> tuple[Response, StatusCode]:
+    """
+    Generate the final feedback.
+
+    Returns:
+        tuple[Response, StatusCode]: A tuple containing the final
+        feedback or, in case of an error, an error message and an
+        HTTP status code.
+    """
+
+    try:
+        final_feedback = FinalFeedback(
+            feedback=generate_final_feedback(runnable, session_id)
+        )
+    except Exception as e:
+        logger.error(e)
+        return jsonify({"error": str(e)}), 500
+
+    return jsonify(final_feedback.model_dump()), 200
 
 
 def main() -> None:

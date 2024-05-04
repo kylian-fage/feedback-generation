@@ -182,3 +182,29 @@ def generate_feedback(
         )
 
     return str(feedback)
+
+
+def generate_final_feedback(
+    runnable: RunnableWithMessageHistory,
+    session_id: str,
+) -> str:
+
+    message = """From the feedback history, generate a final feedback
+that reflects the user's level of understanding of the topic, progress
+towards the goal, and overall satisfaction with the task. It should
+mention the points to be worked on. Write it between <feedback> tags:"""
+
+    try:
+        feedback = runnable.invoke(
+            {"input": message},
+            config={"configurable": {"session_id": session_id}},
+        )
+    except ValidationError as exc:
+        raise ValueError("Runnable did not return feedback") from exc
+
+    if PREFERRED_MODEL == "olmo":
+        feedback: str = feedback.replace("<feedback>", "").replace(
+            "</feedback>", ""
+        )
+
+    return str(feedback)

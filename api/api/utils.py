@@ -145,6 +145,17 @@ class AnswerRequest(BaseModel):
     start: bool = Field(..., description="Whether the quiz has just started.")
 
 
+class FinalFeedback(BaseModel):
+    """
+    Represents the structure of the final feedback.
+
+    Attributes:
+        feedback (str): The text of the feedback.
+    """
+
+    feedback: str = Field(..., description="The text of the feedback.")
+
+
 def compare_answers(
     quiz_answers_obj: QuizAnswers,
     user_answers_obj: AnswerRequest,
@@ -178,6 +189,6 @@ def compare_answers(
         raise KeyError("Question not found")
 
     return (
-        quiz_answers[index].answers == user_answers,
+        sorted(quiz_answers[index].answers) == sorted(user_answers),
         quiz_answers[index].answers,
     )
