@@ -90,6 +90,13 @@ class FeedbackOutputParser(BaseOutputParser[str]):
 
 
 def get_system_template() -> str:
+    """
+    Return the template for the system message.
+
+    Returns:
+        str: The template for the system message.
+    """
+
     with open(
         os.path.join(data_url, "system_template.txt"), "r", encoding="utf-8"
     ) as file:
@@ -99,6 +106,13 @@ def get_system_template() -> str:
 
 
 def get_message_template() -> str:
+    """
+    Return the template for the human message.
+
+    Returns:
+        str: The template for the human message.
+    """
+
     with open(
         os.path.join(data_url, "message_template.txt"), "r", encoding="utf-8"
     ) as file:
@@ -111,6 +125,17 @@ def get_runnable(
     history_store: dict[str, ChatMessageHistory],
     system_details: SystemDetails,
 ) -> RunnableWithMessageHistory:
+    """
+    Return the runnable.
+
+    Args:
+        history_store (dict[str, ChatMessageHistory]): The history store.
+        system_details (SystemDetails): The system details.
+
+    Returns:
+        RunnableWithMessageHistory: The runnable.
+    """
+
     def get_session_history(session_id: str) -> BaseChatMessageHistory:
         if session_id not in history_store:
             history_store[session_id] = ChatMessageHistory()
@@ -156,6 +181,17 @@ def generate_feedback(
     session_id: str,
     message_details: MessageDetails,
 ) -> str:
+    """
+    Generate feedback.
+
+    Args:
+        runnable (RunnableWithMessageHistory): The runnable.
+        session_id (str): The session ID.
+        message_details (MessageDetails): The message details.
+
+    Returns:
+        str: The feedback.
+    """
 
     message_template = get_message_template()
 
@@ -188,6 +224,16 @@ def generate_final_feedback(
     runnable: RunnableWithMessageHistory,
     session_id: str,
 ) -> str:
+    """
+    Generate final feedback.
+
+    Args:
+        runnable (RunnableWithMessageHistory): The runnable.
+        session_id (str): The session ID.
+
+    Returns:
+        str: The final feedback.
+    """
 
     message = """From the feedback history, generate a final feedback
 that reflects the user's level of understanding of the topic, progress
