@@ -17,7 +17,7 @@ import {
 import Markdown from "react-markdown";
 
 import { useEffect, useState } from "react";
-import { ErrorMessage } from "./components/error-message";
+import { ErrorMessage } from "@/components/error-message";
 
 type Option = string;
 type Question = string;
@@ -36,7 +36,7 @@ interface QuizData {
 }
 
 /**
- * Renders the main App component.
+ * Render the main App component.
  *
  * @returns The main page component.
  */
@@ -54,7 +54,7 @@ export default function App() {
 }
 
 /**
- * Renders a quiz component with interactive features.
+ * Render a quiz component with interactive features.
  *
  * @returns The main quiz component.
  */
@@ -78,6 +78,9 @@ function Quiz() {
     const [dataFetchingFailed, setDataFetchingFailed] = useState(false);
     const [feedbackGenerationFailed, setFeedbackGenerationFailed] =
         useState(false);
+    const [attempts, setAttempts] = useState(1);
+
+    const maxAttempts = 2;
 
     useEffect(() => {
         setTimeout(() => {
@@ -110,7 +113,7 @@ function Quiz() {
     }, []);
 
     /**
-     * Handles feedback submission.
+     * Handle feedback submission.
      *
      * @returns A promise that resolves once the feedback is submitted.
      */
@@ -133,7 +136,11 @@ function Quiz() {
         setIsVisible(false);
 
         setTimeout(() => {
-            if (isCorrect && currentQuestionIndex < quizData.quiz.length - 1) {
+            if (
+                (isCorrect || attempts >= maxAttempts) &&
+                currentQuestionIndex < quizData.quiz.length - 1
+            ) {
+                setIsVisible(false);
                 setCurrentQuestionIndex(currentQuestionIndex + 1);
                 setSelectedAnswers([]);
                 setFeedback("");
@@ -143,25 +150,31 @@ function Quiz() {
                     answers: [],
                     start: false,
                 });
+                setAttempts(1);
             } else if (
                 !isCorrect &&
-                currentQuestionIndex < quizData.quiz.length
+                currentQuestionIndex < quizData.quiz.length &&
+                attempts < maxAttempts
             ) {
+                setIsVisible(false);
                 setFeedback("");
                 setAnswers({
                     question: "",
                     answers: [],
                     start: false,
                 });
+                setAttempts(attempts + 1);
             } else {
+                setIsLoading(true);
                 setQuizCompleted(true);
+                setAttempts(1);
             }
             setIsVisible(true);
         }, 500);
     };
 
     /**
-     * Generates feedback based on answers sent to the server.
+     * Generate feedback based on answers sent to the server.
      *
      * @returns A promise that resolves once the feedback is generated.
      */
@@ -236,7 +249,7 @@ function Quiz() {
     }
 
     /**
-     * Handles option click.
+     * Handle option click.
      *
      * @param answer - The option that was clicked.
      */
@@ -337,10 +350,14 @@ function Quiz() {
                 >
                     {isLoading ? <LoadingSpinner className="h-4 w-4" /> : null}
                     {(isCorrect && !isLoading) ||
-                    (!feedback && !isCorrect && !isLoading) ? (
+                    (!feedback && !isCorrect && !isLoading) ||
+                    (attempts >= maxAttempts && !isLoading) ? (
                         <ChevronRight className="h-4 w-4" />
                     ) : null}
-                    {!isCorrect && feedback ? (
+                    {!isCorrect &&
+                    feedback &&
+                    attempts < maxAttempts &&
+                    !isLoading ? (
                         <RotateCcw className="h-4 w-4" />
                     ) : null}
                 </Button>
