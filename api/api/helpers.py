@@ -16,6 +16,7 @@ from langchain_core.prompts import (
 )
 from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain_openai import ChatOpenAI
+from langchain_together import Together
 from pydantic import ValidationError
 
 from api.mistral_patch import PatchedChatMistralAI
@@ -27,7 +28,6 @@ API_ROOT = os.path.realpath(os.path.dirname(__file__))
 data_url = os.path.join(API_ROOT, os.path.pardir, "data")
 store: dict[str, ChatMessageHistory] = {}
 PREFERRED_MODEL = os.environ.get("PREFERRED_MODEL", "gpt")
-llm: ChatOpenAI | PatchedChatMistralAI
 
 match PREFERRED_MODEL:
     case "gpt":
@@ -50,8 +50,25 @@ match PREFERRED_MODEL:
             raise ValueError(
                 "MISTRAL_API_KEY environment variable not set"
             ) from e
+    case "olmo":
+        try:
+            llm = Together(
+                model="allenai/OLMo-7B-Instruct",
+                temperature=0.5,
+                top_k=1,
+                top_p=1.0,
+                max_tokens=1000,
+            )
+        except KeyError as e:
+            raise ValueError(
+                "TOGETHER_API_KEY environment variable not set"
+            ) from e
     case _:
-        raise ValueError(f"Unsupported model: {PREFERRED_MODEL}")
+        raise ValueError(
+            f"""Unsupported model: {
+                PREFERRED_MODEL
+            }. Valid models: gpt, mixtral, olmo"""
+        )
 
 
 class FeedbackOutputParser(BaseOutputParser[str]):
@@ -120,7 +137,10 @@ def get_runnable(
 
     parser = FeedbackOutputParser()
 
-    chain = prompt | llm | parser
+    if PREFERRED_MODEL == "olmo":
+        chain = prompt | llm
+    else:
+        chain = prompt | llm | parser
 
     runnable = RunnableWithMessageHistory(
         chain,  # type: ignore
@@ -155,5 +175,10 @@ def generate_feedback(
         )
     except ValidationError as exc:
         raise ValueError("Runnable did not return feedback") from exc
+
+    if PREFERRED_MODEL == "olmo":
+        feedback: str = feedback.replace("<feedback>", "").replace(
+            "</feedback>", ""
+        )
 
     return str(feedback)
