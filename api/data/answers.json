@@ -5,45 +5,59 @@
             "answers": ["To govern the arrangement of words in sentences"]
         },
         {
-            "question": "In the sentence *She sings beautifully,* which word is the head of the dependency structure?",
-            "answers": ["*sings*"]
-        },
-        {
             "question": "Which of the following are basic units of syntactic analysis?",
             "answers": ["Phrases", "Clauses", "Sentences"]
-        },
-        {
-            "question": "In the sentence *The book on the table is mine,* what is the syntactic role of *on the table*?",
-            "answers": ["Prepositional phrase"]
         },
         {
             "question": "What is the purpose of phrase structure rules in syntax?",
             "answers": ["To generate the permissible structures of a language"]
         },
         {
+            "question": "What are syntactic functions?",
+            "answers": [
+                "A role that a word or phrase plays in a sentence, that determines its relationship to other elements in the sentence"
+            ]
+        },
+        {
+            "question": "What is a modifier?",
+            "answers": [
+                "A word or phrase that describes or provides additional information about another word or phrase"
+            ]
+        },
+        {
+            "question": "In the noun phrase *that nice tall man from Canada whom you met,* which of the following statements are true?",
+            "answers": [
+                "*man* is the head",
+                "*whom you met* is a relative clause"
+            ]
+        },
+        {
+            "question": "In the sentence *I consider him a friend,* which of the following statements are true?",
+            "answers": [
+                "*I* is the subject",
+                "*consider* is the predicate",
+                "*a friend* is a predicative complement"
+            ]
+        },
+        {
             "question": "In the sentence *The book that I read was interesting,* what is the syntactic function of *that I read*?",
             "answers": ["Relative clause modifier"]
         },
         {
-            "question": "What is the role of hierarchical structure in syntax?",
-            "answers": [
-                "To capture the relationships between words and phrases"
-            ]
+            "question": "Which of the following words can be both a noun and a verb depending on the context?",
+            "answers": ["*run*"]
         },
         {
-            "question": "In the sentence *Flying planes can be dangerous,* what is the source of the structural ambiguity?",
-            "answers": ["The attachment of *flying*"]
+            "question": "What part of speech is the word *ouch* in the sentence *Ouch! That hurt!*?",
+            "answers": ["Interjection"]
         },
         {
-            "question": "What is the primary difference between arguments and adjuncts in dependency syntax?",
-            "answers": ["Arguments are obligatory, while adjuncts are optional"]
+            "question": "What part of speech is the word *and* in the sentence *I like apples and oranges*?",
+            "answers": ["Conjunction"]
         },
         {
-            "question": "In the sentence *The old man walked slowly,* which of the following statements are true?",
-            "answers": [
-                "*walked* is the head",
-                "*old* is an adjectival modifier of *man*"
-            ]
+            "question": "What part(s) of speech may be expected in the sentence *____ is my favorite color*?",
+            "answers": ["Noun", "Pronoun"]
         }
     ]
 }

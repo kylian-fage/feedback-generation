@@ -10,26 +10,8 @@
             ]
         },
         {
-            "question": "In the sentence *She sings beautifully,* which word is the head of the dependency structure?",
-            "options": [
-                "*She*",
-                "*sings*",
-                "*beautifully*",
-                "None of the above"
-            ]
-        },
-        {
             "question": "Which of the following are basic units of syntactic analysis?",
             "options": ["Morphemes", "Phrases", "Clauses", "Sentences"]
-        },
-        {
-            "question": "In the sentence *The book on the table is mine,* what is the syntactic role of *on the table*?",
-            "options": [
-                "Subject",
-                "Object",
-                "Prepositional phrase",
-                "Verb phrase"
-            ]
         },
         {
             "question": "What is the purpose of phrase structure rules in syntax?",
@@ -41,49 +23,65 @@
             ]
         },
         {
+            "question": "What are syntactic functions?",
+            "options": [
+                "An approach for analyzing how modifiers are attached to nouns or verbs within a sentence",
+                "A rule that determines the order of words in a sentence",
+                "The cognitive process underlying the parsing and interpretation of complex structures in syntax",
+                "A role that a word or phrase plays in a sentence, that determines its relationship to other elements in the sentence"
+            ]
+        },
+        {
+            "question": "What is a modifier?",
+            "options": [
+                "A word that connects two clauses or sentences",
+                "A word that shows the relationship between a noun or pronoun and another word in the sentence",
+                "A word or phrase that describes or provides additional information about another word or phrase",
+                "A principal component of a sentence that asserts something about the subject"
+            ]
+        },
+        {
+            "question": "In the noun phrase *that nice tall man from Canada whom you met,* which of the following statements are true?",
+            "options": [
+                "*man* is the head",
+                "*whom you met* is a relative clause",
+                "*from Canada* is a relative clause",
+                "*whom you met* is not a postmodifier"
+            ]
+        },
+        {
+            "question": "In the sentence *I consider him a friend,* which of the following statements are true?",
+            "options": [
+                "*I* is the subject",
+                "*consider* is the predicate",
+                "*him* is the indirect object",
+                "*a friend* is a predicative complement"
+            ]
+        },
+        {
             "question": "In the sentence *The book that I read was interesting,* what is the syntactic function of *that I read*?",
             "options": [
-                "Subject",
+                "Prepositional phrase",
                 "Object",
                 "Relative clause modifier",
                 "Complement"
             ]
         },
         {
-            "question": "What is the role of hierarchical structure in syntax?",
-            "options": [
-                "To represent the linear order of words in a sentence",
-                "To capture the relationships between words and phrases",
-                "To describe the meaning of a sentence",
-                "To study the sounds of a sentence"
-            ]
+            "question": "Which of the following words can be both a noun and a verb depending on the context?",
+            "options": ["*run*", "*blue*", "*quickly*", "*she*"]
         },
         {
-            "question": "In the sentence *Flying planes can be dangerous,* what is the source of the structural ambiguity?",
-            "options": [
-                "The meaning of *flying*",
-                "The meaning of *planes*",
-                "The attachment of *flying*",
-                "The attachment of *dangerous*"
-            ]
+            "question": "What part of speech is the word *ouch* in the sentence *Ouch! That hurt!*?",
+            "options": ["Noun", "Verb", "Interjection", "Adverb"]
         },
         {
-            "question": "What is the primary difference between arguments and adjuncts in dependency syntax?",
-            "options": [
-                "Arguments are obligatory, while adjuncts are optional",
-                "Arguments modify the meaning of the verb, while adjuncts modify the entire clause",
-                "Arguments are nouns, while adjuncts are adverbs or prepositional phrases",
-                "Arguments are always direct dependents of the verb, while adjuncts can be dependents of other elements"
-            ]
+            "question": "What part of speech is the word *and* in the sentence *I like apples and oranges*?",
+            "options": ["Preposition", "Conjunction", "Interjection", "Pronoun"]
         },
         {
-            "question": "In the sentence *The old man walked slowly,* which of the following statements are true?",
-            "options": [
-                "*man* is the head",
-                "*walked* is the head",
-                "*old* is an adjectival modifier of *man*",
-                "*slowly* is an adverbial modifier of *man*"
-            ]
+            "question": "What part(s) of speech is expected in the sentence *____ is my favorite color*?",
+            "options": ["Adjective", "Noun", "Subject", "Pronoun"]
         }
     ]
 }
