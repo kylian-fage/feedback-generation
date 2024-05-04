@@ -79,8 +79,10 @@ function Quiz() {
     const [feedbackGenerationFailed, setFeedbackGenerationFailed] =
         useState(false);
     const [attempts, setAttempts] = useState(1);
+    const [score, setScore] = useState(0);
 
     const maxAttempts = 2;
+    const points = 10;
 
     useEffect(() => {
         setTimeout(() => {
@@ -118,23 +120,23 @@ function Quiz() {
      * @returns A promise that resolves once the feedback is submitted.
      */
     const handleFeedback = async (): Promise<void> => {
-        setAnswers({
-            question: quizData.quiz[currentQuestionIndex].question,
-            answers: selectedAnswers,
-            start: start,
-        });
+        if (!quizCompleted) {
+            setAnswers({
+                question: quizData.quiz[currentQuestionIndex].question,
+                answers: selectedAnswers,
+                start: start,
+            });
+            setStart(false);
+        }
         setIsLoading(true);
-        setStart(false);
     };
 
     /**
-     * Handles the next view.
+     * Handle the next view.
      *
      * @returns A promise that resolves once the next view is rendered.
      */
     const handleNextView = async (): Promise<void> => {
-        setIsVisible(false);
-
         setTimeout(() => {
             if (
                 (isCorrect || attempts >= maxAttempts) &&
@@ -150,6 +152,7 @@ function Quiz() {
                     answers: [],
                     start: false,
                 });
+                setScore(isCorrect ? points / attempts + score : 0 + score);
                 setAttempts(1);
             } else if (
                 !isCorrect &&
@@ -167,6 +170,7 @@ function Quiz() {
             } else {
                 setIsLoading(true);
                 setQuizCompleted(true);
+                setScore(isCorrect ? points / attempts + score : 0 + score);
                 setAttempts(1);
             }
             setIsVisible(true);
@@ -227,16 +231,60 @@ function Quiz() {
         }
     };
 
+    /**
+     * Generate final feedback based on the history of feedbacks.
+     *
+     * @returns A promise that resolves once the feedback is generated.
+     */
+    const generateFinalFeedback = async (): Promise<void> => {
+        await fetch("/api/final")
+            .then((response) => {
+                if (response.status !== 200 && response.status !== 500) {
+                    throw new Error("Network response was not ok");
+                }
+                return response.json();
+            })
+            .then((data) => {
+                if (data.error) {
+                    console.error("API Error:", data.error);
+                    setFeedback("");
+                } else if (data["feedback"] === undefined) {
+                    throw new Error("Network response was not ok");
+                } else {
+                    setFeedback(data["feedback"]);
+                }
+            })
+            .catch((error) => {
+                console.error(
+                    "An error occurred while sending the answers",
+                    error
+                );
+                setFeedback("");
+            });
+    };
+
     useEffect(() => {
-        if (isLoading) {
+        if (isLoading && !quizCompleted) {
             generateFeedback().then(() => {
+                setIsLoading(false);
+            });
+        } else if (isLoading && quizCompleted) {
+            generateFinalFeedback().then(() => {
                 setIsLoading(false);
             });
         }
     }, [isLoading]);
 
-    if (quizCompleted) {
-        return <QuizCompleted isVisible={isVisible} />;
+    if (quizCompleted && !isLoading) {
+        return (
+            <QuizCompleted
+                isVisible={isVisible}
+                score={Math.round(
+                    (score / (quizData.quiz.length * points)) * 100
+                )}
+                feedback={feedback}
+            />
+        );
     }
 
     if (dataFetchingFailed) {
