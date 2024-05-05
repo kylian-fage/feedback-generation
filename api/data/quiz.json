@@ -80,7 +80,7 @@
             "options": ["Preposition", "Conjunction", "Interjection", "Pronoun"]
         },
         {
-            "question": "What part(s) of speech is expected in the sentence *____ is my favorite color*?",
+            "question": "What part(s) of speech may be expected in the sentence *____ is my favorite color*?",
             "options": ["Adjective", "Noun", "Subject", "Pronoun"]
         }
     ]
