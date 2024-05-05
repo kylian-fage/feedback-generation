@@ -56,4 +56,10 @@
     body {
         @apply bg-background text-foreground;
     }
+    ul {
+        @apply list-disc pl-4;
+    }
+    ol {
+        @apply list-decimal pl-[1.25rem];
+    }
 }
