@@ -231,7 +231,7 @@ def generate_feedback(
 def generate_final_feedback(
     runnable: RunnableWithMessageHistory,
     session_id: str,
-) -> str:
+) -> str | None:
     """
     Generate final feedback.
 
@@ -240,8 +240,12 @@ def generate_final_feedback(
         session_id (str): The session ID.
 
     Returns:
-        str: The final feedback.
+        str | None: The final feedback.
     """
+
+    if PREFERRED_MODEL == "olmo":
+        # TODO: add log "OLMO does not support final feedback generation"
+        return
 
     message = """From the feedback history, generate a final feedback
 that reflects the user's level of understanding of the topic, progress

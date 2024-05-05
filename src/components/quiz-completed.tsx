@@ -8,10 +8,12 @@ export function QuizCompleted({
     isVisible,
     score,
     feedback,
+    failed,
 }: {
     isVisible: boolean;
     score: number;
     feedback: string;
+    failed: boolean;
 }) {
     return (
         <Card
@@ -26,21 +28,21 @@ export function QuizCompleted({
                 <div className="text-center text-6xl font-bold">
                     {score} <span className="text-4xl">%</span>
                 </div>
-                {feedback ? (
+                {feedback && !failed ? (
                     <ScrollArea
                         className="mt-6 p-4 border rounded-lg"
                         maxHeight="15rem"
                     >
                         <Markdown className={"space-y-2"}>{feedback}</Markdown>
                     </ScrollArea>
-                ) : (
+                ) : failed ? (
                     <ErrorMessage
                         error={
                             "We're sorry, but an unexpected error occurred while generating feedback."
                         }
                         className="mt-4"
                     />
-                )}
+                ) : null}
             </CardContent>
             <CardFooter className="mt-4 justify-center">
                 <Button

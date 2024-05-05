@@ -248,10 +248,12 @@ function Quiz() {
                 if (data.error) {
                     console.error("API Error:", data.error);
                     setFeedback("");
+                    setFeedbackGenerationFailed(true);
                 } else if (data["feedback"] === undefined) {
                     throw new Error("Network response was not ok");
                 } else {
                     setFeedback(data["feedback"]);
+                    setFeedbackGenerationFailed(false);
                 }
             })
             .catch((error) => {
@@ -260,6 +262,7 @@ function Quiz() {
                     error
                 );
                 setFeedback("");
+                setFeedbackGenerationFailed(true);
             });
     };
 
@@ -283,6 +286,7 @@ function Quiz() {
                     (score / (quizData.quiz.length * points)) * 100
                 )}
                 feedback={feedback}
+                failed={feedbackGenerationFailed}
             />
         );
     }

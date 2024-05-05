@@ -134,7 +134,7 @@ def final_feedback() -> tuple[Response, StatusCode]:
 
     try:
         final_feedback = FinalFeedback(
-            feedback=generate_final_feedback(runnable, session_id)
+            feedback=generate_final_feedback(runnable, session_id) or "",
         )
     except Exception as e:
         logger.error(e)
