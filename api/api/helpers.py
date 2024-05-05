@@ -6,7 +6,6 @@ from langchain_community.chat_message_histories.in_memory import (
     ChatMessageHistory,
 )
 from langchain_core.chat_history import BaseChatMessageHistory
-from langchain_core.exceptions import OutputParserException
 from langchain_core.output_parsers import BaseOutputParser
 from langchain_core.prompts import (
     ChatPromptTemplate,
@@ -78,10 +77,7 @@ class FeedbackOutputParser(BaseOutputParser[str]):
         pattern = r"<feedback>([\s\S]*?)</feedback>"
         feedback = re.search(pattern, text)
         if not feedback:
-            raise OutputParserException(
-                f"Expected output value to contain a <feedback> tag. "
-                f"Received {text}."
-            )
+            return text
         return feedback.group(1).strip()
 
     @property
