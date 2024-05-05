@@ -13,6 +13,8 @@ from langchain_core.prompts import (
     MessagesPlaceholder,
     SystemMessagePromptTemplate,
 )
+from langchain_core.runnables.base import Runnable
+from langchain_core.runnables.config import RunnableConfig
 from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain_openai import ChatOpenAI
 from langchain_together import Together
@@ -120,7 +122,7 @@ def get_message_template() -> str:
 def get_runnable(
     history_store: dict[str, ChatMessageHistory],
     system_details: SystemDetails,
-) -> RunnableWithMessageHistory:
+) -> Runnable:
     """
     Return the runnable.
 
@@ -129,7 +131,7 @@ def get_runnable(
         system_details (SystemDetails): The system details.
 
     Returns:
-        RunnableWithMessageHistory: The runnable.
+        Runnable: The runnable.
     """
 
     def get_session_history(session_id: str) -> BaseChatMessageHistory:
@@ -151,7 +153,11 @@ def get_runnable(
     prompt = ChatPromptTemplate.from_messages(
         [
             system_message,
-            MessagesPlaceholder(variable_name="history"),
+            (
+                MessagesPlaceholder(variable_name="history")
+                if PREFERRED_MODEL != "olmo"
+                else ""
+            ),
             HumanMessagePromptTemplate.from_template("{input}"),
         ]
     )
@@ -159,9 +165,9 @@ def get_runnable(
     parser = FeedbackOutputParser()
 
     if PREFERRED_MODEL == "olmo":
-        chain = prompt | llm
-    else:
-        chain = prompt | llm | parser
+        return prompt | llm
+
+    chain = prompt | llm | parser
 
     runnable = RunnableWithMessageHistory(
         chain,  # type: ignore
@@ -173,7 +179,7 @@ def get_runnable(
 
 
 def generate_feedback(
-    runnable: RunnableWithMessageHistory,
+    runnable: Runnable,
     session_id: str,
     message_details: MessageDetails,
 ) -> str:
@@ -181,7 +187,7 @@ def generate_feedback(
     Generate feedback.
 
     Args:
-        runnable (RunnableWithMessageHistory): The runnable.
+        runnable (Runnable): The runnable.
         session_id (str): The session ID.
         message_details (MessageDetails): The message details.
 
@@ -200,10 +206,16 @@ def generate_feedback(
         answers="; ".join(message_details.answers),
     )
 
+    config: RunnableConfig | None = (
+        {"configurable": {"session_id": session_id}}
+        if PREFERRED_MODEL == "olmo"
+        else None
+    )
+
     try:
         feedback = runnable.invoke(
             {"input": message},
-            config={"configurable": {"session_id": session_id}},
+            config=config,
         )
     except ValidationError as exc:
         raise ValueError("Runnable did not return feedback") from exc
@@ -236,10 +248,16 @@ that reflects the user's level of understanding of the topic, progress
 towards the goal, and overall satisfaction with the task. It should
 mention the points to be worked on. Write it between <feedback> tags:"""
 
+    config: RunnableConfig | None = (
+        {"configurable": {"session_id": session_id}}
+        if PREFERRED_MODEL == "olmo"
+        else None
+    )
+
     try:
         feedback = runnable.invoke(
             {"input": message},
-            config={"configurable": {"session_id": session_id}},
+            config=config,
         )
     except ValidationError as exc:
         raise ValueError("Runnable did not return feedback") from exc
