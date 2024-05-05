@@ -27,8 +27,11 @@ export function QuizCompleted({
                     {score} <span className="text-4xl">%</span>
                 </div>
                 {feedback ? (
-                    <ScrollArea className="max-h-60 mt-6 p-4 border rounded-lg">
-                        <Markdown>{feedback}</Markdown>
+                    <ScrollArea
+                        className="mt-6 p-4 border rounded-lg"
+                        maxHeight="15rem"
+                    >
+                        <Markdown className={"space-y-2"}>{feedback}</Markdown>
                     </ScrollArea>
                 ) : (
                     <ErrorMessage
