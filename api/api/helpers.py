@@ -199,7 +199,7 @@ def generate_feedback(
         message_template
     ).format(
         question=message_details.question,
-        correctness=message_details.correctness,
+        correctness=message_details.correctness.value,
         correct_answers="; ".join(message_details.correct_answers),
         answers="; ".join(message_details.answers),
     )
