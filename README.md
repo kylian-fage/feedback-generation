@@ -18,9 +18,10 @@
     </li>
     <li><a href="#demo">Demo</a></li>
     <li><a href="#license">License</a></li>
-    <li><a href="#to-do">To do</a></li>
   </ol>
 </details>
+
+![homescreen](./assets/screenshots/homescreen.png)
 
 ## About the project
 
@@ -31,7 +32,6 @@
 - [![React][React]][React-url]
 - [![Shadcn][Shadcn]][Shadcn-url]
 
-
 ## Getting started
 
 ### Prerequisites
@@ -40,6 +40,7 @@
 - ![Node Version][node-version]
 - ![OpenAI API key][openai-apikey]
 - ![Mistral API key][mistral-apikey]
+<!-- Ajouter clé Together -->
 
 ### Installation
 
@@ -74,15 +75,7 @@
 
 ## License
 
-Distributed under the MIT License. See LICENSE for more information.
-
-## To do
-
-- [ ] Add OLMo
-- [ ] Refine quiz questions
-- [ ] Define a maximum number of attempts
-- [ ] Show the score
-- [ ] Generate a final feedback
+Distributed under the MIT License. See [LICENSE](https://github.com/kylian-fage/feedback-generation/blob/main/LICENSE) for more information.
 
 [shadcn]: https://img.shields.io/badge/shadcn-%23000?logo=shadcn%2Fui&logoColor=black&labelColor=white
 [shadcn-url]: https://ui.shadcn.com/
