@@ -71,9 +71,8 @@ class Feedback(BaseModel):
         isCorrect (bool): Whether the user's answer is correct or not.
     """
 
-    feedback: str = Field(..., description="The text of the feedback.")
+    feedback: str = Field(description="The text of the feedback.")
     isCorrect: bool = Field(
-        ...,
         description="Whether the user's answer is correct or not.",
         alias="is_correct",
     )
@@ -91,16 +90,14 @@ class MessageDetails(BaseModel):
         answers (Answers): The user's answers to the question.
     """
 
-    question: str = Field(..., description="The text of the question.")
+    question: str = Field(description="The text of the question.")
     correctness: Correctness = Field(
-        ..., description="Whether the user's answer is correct or not."
+        description="Whether the user's answer is correct or not."
     )
     correct_answers: Answers = Field(
-        ..., description="The correct answers to the question."
+        description="The correct answers to the question."
     )
-    answers: Answers = Field(
-        ..., description="The user's answers to the question."
-    )
+    answers: Answers = Field(description="The user's answers to the question.")
 
 
 class SystemDetails(BaseModel):
@@ -115,17 +112,14 @@ class SystemDetails(BaseModel):
     """
 
     theme: str = Field(
-        ..., description="The theme of the task.", alias="task_theme"
+        description="The theme of the task.", alias="task_theme"
     )
     description: str = Field(
-        ...,
         description="The description of the task.",
         alias="task_description",
     )
-    goal: str = Field(
-        ..., description="The goal of the task.", alias="task_goal"
-    )
-    user_level: PositiveInt = Field(..., description="The level of the user.")
+    goal: str = Field(description="The goal of the task.", alias="task_goal")
+    user_level: PositiveInt = Field(description="The level of the user.")
 
 
 class AnswerRequest(BaseModel):
@@ -138,11 +132,9 @@ class AnswerRequest(BaseModel):
         start (bool): Whether the quiz has just started.
     """
 
-    question: str = Field(..., description="The text of the question.")
-    answers: Answers = Field(
-        ..., description="The user's answers to the question."
-    )
-    start: bool = Field(..., description="Whether the quiz has just started.")
+    question: str = Field(description="The text of the question.")
+    answers: Answers = Field(description="The user's answers to the question.")
+    start: bool = Field(description="Whether the quiz has just started.")
 
 
 class FinalFeedback(BaseModel):
@@ -153,7 +145,7 @@ class FinalFeedback(BaseModel):
         feedback (str): The text of the feedback.
     """
 
-    feedback: str = Field(..., description="The text of the feedback.")
+    feedback: str = Field(description="The text of the feedback.")
 
 
 def compare_answers(

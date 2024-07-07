@@ -95,7 +95,7 @@ def handle_request() -> tuple[Response, StatusCode]:
         logger.error("Received an invalid answer list.")
         return jsonify({"error": "Invalid input"}), 400
 
-    global session_id
+    global session_id  # pylint: disable=W0603
 
     if data.start:
         session_id = str(uuid4()).split("-")[0]
@@ -114,7 +114,7 @@ def handle_request() -> tuple[Response, StatusCode]:
             feedback=generate_feedback(runnable, session_id, message_details),
             is_correct=is_correct,
         )
-    except Exception as e:
+    except Exception as e:  # pylint: disable=W0718
         logger.error(e)
         return jsonify({"error": str(e), "isCorrect": is_correct}), 500
 
@@ -133,15 +133,17 @@ def final_feedback() -> tuple[Response, StatusCode]:
     """
 
     try:
-        final_feedback = FinalFeedback(
+        feedback = FinalFeedback(
             feedback=generate_final_feedback(runnable, session_id) or "",
         )
-    except Exception as e:
+    except Exception as e:  # pylint: disable=W0718
         logger.error(e)
         return jsonify({"error": str(e)}), 500
 
-    return jsonify(final_feedback.model_dump()), 200
+    return jsonify(feedback.model_dump()), 200
 
 
 def main() -> None:
+    """Starts the application."""
+
     app.run(debug=True, port=3001, host="localhost")
