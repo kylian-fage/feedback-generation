@@ -6,6 +6,7 @@ from langchain_community.chat_message_histories.in_memory import (
     ChatMessageHistory,
 )
 from langchain_core.chat_history import BaseChatMessageHistory
+from langchain_core.language_models.base import BaseLanguageModel
 from langchain_core.output_parsers import BaseOutputParser
 from langchain_core.prompts import (
     ChatPromptTemplate,
@@ -33,8 +34,8 @@ PREFERRED_MODEL = os.environ.get("PREFERRED_MODEL", "gpt")
 match PREFERRED_MODEL:
     case "gpt":
         try:
-            llm = ChatOpenAI(
-                model="gpt-4-turbo",
+            llm: BaseLanguageModel = ChatOpenAI(
+                model="gpt-4o",
                 temperature=0.5,
             )
         except KeyError as e:
@@ -44,7 +45,7 @@ match PREFERRED_MODEL:
     case "mixtral":
         try:
             llm = PatchedChatMistralAI(
-                model="open-mixtral-8x22b",
+                model_name="open-mixtral-8x22b",
                 temperature=0.5,
             )
         except KeyError as e:
@@ -59,7 +60,7 @@ match PREFERRED_MODEL:
                 top_k=1,
                 top_p=1.0,
                 max_tokens=1000,
-            )
+            )  # type: ignore [call-arg]
         except KeyError as e:
             raise ValueError(
                 "TOGETHER_API_KEY environment variable not set"
@@ -208,12 +209,12 @@ def generate_feedback(
 
     config: RunnableConfig | None = (
         {"configurable": {"session_id": session_id}}
-        if PREFERRED_MODEL == "olmo"
+        if PREFERRED_MODEL != "olmo"
         else None
     )
 
     try:
-        feedback = runnable.invoke(
+        feedback: str = runnable.invoke(
             {"input": message},
             config=config,
         )
@@ -221,7 +222,7 @@ def generate_feedback(
         raise ValueError("Runnable did not return feedback") from exc
 
     if PREFERRED_MODEL == "olmo":
-        feedback: str = feedback.replace("<feedback>", "").replace(
+        feedback = feedback.replace("<feedback>", "").replace(
             "</feedback>", ""
         )
 
@@ -229,7 +230,7 @@ def generate_feedback(
 
 
 def generate_final_feedback(
-    runnable: RunnableWithMessageHistory,
+    runnable: Runnable,
     session_id: str,
 ) -> str | None:
     """
@@ -244,8 +245,7 @@ def generate_final_feedback(
     """
 
     if PREFERRED_MODEL == "olmo":
-        # TODO: add log "OLMO does not support final feedback generation"
-        return
+        return None
 
     message = """From the feedback history, generate a final feedback
 that reflects the user's level of understanding of the topic, progress
@@ -254,12 +254,12 @@ mention the points to be worked on. Write it between <feedback> tags:"""
 
     config: RunnableConfig | None = (
         {"configurable": {"session_id": session_id}}
-        if PREFERRED_MODEL == "olmo"
+        if PREFERRED_MODEL != "olmo"
         else None
     )
 
     try:
-        feedback = runnable.invoke(
+        feedback: str = runnable.invoke(
             {"input": message},
             config=config,
         )
@@ -267,7 +267,7 @@ mention the points to be worked on. Write it between <feedback> tags:"""
         raise ValueError("Runnable did not return feedback") from exc
 
     if PREFERRED_MODEL == "olmo":
-        feedback: str = feedback.replace("<feedback>", "").replace(
+        feedback = feedback.replace("<feedback>", "").replace(
             "</feedback>", ""
         )
 
