@@ -35,7 +35,7 @@ match PREFERRED_MODEL:
     case "gpt":
         try:
             llm: BaseLanguageModel = ChatOpenAI(
-                model="gpt-4o",
+                model="gpt-4-turbo",
                 temperature=0.5,
             )
         except KeyError as e:
